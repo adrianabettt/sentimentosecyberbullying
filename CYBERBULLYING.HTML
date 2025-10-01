@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENTIMENTOS E CYBERBULLYING</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff6f61;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .question-box {
+            background-color: #ffeaea;
+            border-left: 5px solid #ff6f61;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+        .situation {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            /* Alterado para space-between para distribuir uniformemente */
+            justify-content: space-between; 
+            margin-top: 15px;
+        }
+        .option {
+            background-color: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 15px 5px; /* Reduzido o padding horizontal */
+            margin: 8px 4px; /* Reduzido a margem */
+            /* Largura alterada para 20% para caberem 4 na linha */
+            width: 21%; 
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 1.1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Garante que o texto e emoji fiquem visíveis */
+            box-sizing: border-box; 
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+            border-color: #ff6f61;
+        }
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #1a7a3b;
+            font-weight: bold;
+        }
+        .option.wrong {
+            background-color: #f8d7da;
+            border-color: #c82333;
+            font-weight: bold;
+        }
+        .emoji {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SENTIMENTOS E CYBERBULLYING</h1>
+        <p style="text-align: center; font-weight: bold;">Leia a situação e clique no emoji que representa o sentimento principal.</p>
+
+        <div id="quiz-container">
+            </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                situation: `MARIANA VIU QUE CRIARAM UM POST PARA RIR DE UMA FOTO DELA.
+				ELA SE SENTIU MUITO ENVERGONHADA E COM VONTADE DE CHORAR.`,
+                question: "COMO MARIANA ESTÁ SE SENTINDO?",
+                options: [
+                    { emoji: "😂", text: "FELIZ", correct: false },
+                    { emoji: "😢", text: "TRISTE", correct: true },
+                    { emoji: "😴", text: "TÉDIO", correct: false },
+                    { emoji: "😌", text: "CALMA", correct: false }
+                ]
+            },
+            {
+                situation: "LUCAS ESTAVA BRAVO PORQUE PERDEU UM JOGO ONLINE E, PARA SE 'VINGAR', MANDOU MENSAGENS DE XINGAMENTO E AMEAÇA.",
+                question: "QUAL SENTIMENTO, MISTURADO COM A RAIVA, LUCAS PODE TER SENTIDO ANTES DE PRATICAR O CYBERBULLYING?",
+                options: [
+                    { emoji: "😎", text: "CONFIANÇA", correct: false },
+                    { emoji: "🥳", text: "ALEGRIA", correct: false },
+                    { emoji: "🥰", text: "CARINHO", correct: false },
+					{ emoji: "😠", text: "FRUSTRAÇÃO", correct: true }
+                ]
+            },
+            {
+                situation: `PEDRO RECEBEU MENSAGENS ANÔNIMAS NO CELULAR, DIZENDO QUE IAM FAZER ALGO RUIM COM ELE.
+				PEDRO NÃO CONSEGUE DORMIR E FICA OLHANDO O CELULAR COM MEDO DO QUE PODE ACONTECER COM ELE.`,
+                question: "QUAL É O PRINCIPAL SENTIMENTO DE PEDRO NESTA SITUAÇÃO?",
+                options: [
+                    { emoji: "🤔", text: "CURIOSIDADE", correct: false },
+                    { emoji: "🥳", text: "ENTUSIASMO", correct: false },
+                    { emoji: "😱", text: "PAVOR", correct: true },
+                    { emoji: "😂", text: "DIVERSÃO", correct: false }
+                ]
+            },
+            {
+                situation: `ALICE VIU QUE SEUS AMIGOS ESTAVAM FALANDO MAL DE UMA COLEGA DA SALA EM UM GRUPO.
+				ELA NÃO PARTICIPOU, MAS FICOU INCOMODADA E COM O CORAÇÃO APERTADO.`,
+                question: "COMO ALICE PODE ESTAR SE SENTINDO POR PRESENCIAR O CYBERBULLYING?",
+                options: [
+                    { emoji: "😔", text: "AFLITA", correct: true },
+					{ emoji: "🧘‍♀️", text: "RELAXADA", correct: false },
+                    { emoji: "🤤", text: "COM FOME", correct: false },
+                    { emoji: "🤩", text: "DESLUMBRADA", correct: false }
+                ]
+            },
+            {
+                situation: "JOÃO FOI REPREENDIDO PELOS PAIS POR ENVIAR MENSAGENS DE DEBOCHE A UMA DA COLEGA.",
+                question: "QUAL SENTIMENTO JOÃO DEVERIA TER APÓS ENTENDER A DOR QUE CAUSOU?",
+                options: [
+                    { emoji: "🥳", text: "VITÓRIA", correct: false },
+                    { emoji: "🥶", text: "FRIEZA", correct: false },
+                    { emoji: "😏", text: "DEBOCHE", correct: false },
+					{ emoji: "😥", text: "ARREPENDIMENTO", correct: true }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        const quizContainer = document.getElementById('quiz-container');
+        const resultDiv = document.getElementById('result');
+
+        function loadQuestion() {
+            if (currentQuestion >= quizData.length) {
+                showResults();
+                return;
+            }
+
+            const data = quizData[currentQuestion];
+            quizContainer.innerHTML = `
+                <div class="question-box">
+                    <strong>Pergunta ${currentQuestion + 1} de ${quizData.length}:</strong>
+                    <p class="situation">${data.situation}</p>
+                    <p><strong>${data.question}</strong></p>
+                    <div class="options">
+                        ${data.options.map((option, index) => `
+                            <div class="option" data-index="${index}" onclick="checkAnswer(${currentQuestion}, ${index}, this)">
+                                <span class="emoji">${option.emoji}</span>
+                                <span>${option.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(qIndex, oIndex, element) {
+            const isCorrect = quizData[qIndex].options[oIndex].correct;
+            const optionsDivs = element.closest('.options').querySelectorAll('.option');
+
+            // Desativa todos os cliques
+            optionsDivs.forEach(div => div.onclick = null);
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                // Revela a resposta correta
+                optionsDivs.forEach((div, index) => {
+                    if (quizData[qIndex].options[index].correct) {
+                        div.classList.add('correct');
+                    }
+                });
+            }
+
+            // Vai para a próxima pergunta após um pequeno atraso
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 1500);
+        }
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h2>🎉 Fim do Jogo! 🎉</h2>
+                <p>Você completou o Quiz da Empatia!</p>
+                <p>Sua pontuação final é: <strong>${score} de ${quizData.length}</strong>.</p>
+                <button onclick="location.reload()" style="padding: 10px 20px; font-size: 1em; background-color: #ff6f61; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px;">Tentar Novamente</button>
+            `;
+        }
+
+        // Inicia o quiz
+        loadQuestion();
+    </script>
+</body>
+</html>
